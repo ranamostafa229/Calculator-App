@@ -46,9 +46,6 @@ for (let key of keys) {
 
 function formatInput(input) {
   let input_array = input.split("");
-  let first_input = input.slice(0);
-  let last_input = input.slice(-1);
-  let operators = ["+", "-", "*", "/", "%"];
 
   for (let i = 0; i < input_array.length; i++) {
     if (input_array[i] === "*") {
@@ -76,26 +73,7 @@ function formatInput(input) {
     if (input_array[i] === "%") {
       input_array[i] = `<span class='operator'>%</span>`;
     }
-
-    // if (input_array[i].includes(first_input)) {
-    //   display_error.innerHTML = "Invalid Input";
-    //   error_container.classList.add("active");
-    //   setTimeout(() => {
-    //     error_container.classList.remove("active");
-    //   }, 1000);
-    //   return "";
-    // }
-    if (operators.includes(first_input)) {
-      // input_array[i] = "";
-      display_error.innerHTML = "Invalid Input";
-      error_container.classList.add("active");
-      setTimeout(() => {
-        error_container.classList.remove("active");
-      }, 1000);
-      return "";
-    }
   }
-
   return input_array.join("");
 }
 
@@ -103,7 +81,6 @@ function formatOutput(output) {
   let output_string = output.toString();
   output_string = output_string.split(".")[0];
   let decimail = output_string.split(".")[1];
-  //   let last_input = input.slice(-1);
 
   let output_array = output_string.split("");
   if (output_array.length > 3) {
@@ -116,38 +93,53 @@ function formatOutput(output) {
     output_array.push(decimail);
   }
   if (output_string === "Infinity" || output_string === "NaN") {
-    display_error.innerHTML = "Could not divide by zero";
-    error_container.classList.add("active");
-    setTimeout(() => {
-      error_container.classList.remove("active");
-    }, 1000);
-    return false;
+    displayErrorMessage("Could not divide by zero");
+
+    return "";
   }
 
   return output_array.join("");
 }
 
 function validateInput(value) {
-  //   let first_input = input.slice(0);
   let last_input = input.slice(-1);
+  let current_char = value.charAt(0);
   let operators = ["+", "-", "*", "/", "%"];
+
   if (value === "." && last_input === ".") {
     return false;
   }
-  if (operators.includes(value) && operators.includes(last_input)) {
-    return false;
+
+  if (operators.includes(value)) {
+    if (operators.includes(current_char) && isNotNumber(last_input)) {
+      displayErrorMessage("Invalid format used");
+      return false;
+    } else {
+      return true;
+    }
   }
-  //   if (operators.includes(first_input)) {
-  //     display_error.innerHTML = "Invalid Input";
-  //     error_container.classList.add("active");
-  //     setTimeout(() => {
-  //       error_container.classList.remove("active");
-  //     }, 1000);
-  //     return "";
-  //   }
+
   return true;
 }
-
+function displayErrorMessage(message) {
+  display_error.innerHTML = message;
+  error_container.classList.add("active");
+  setTimeout(() => {
+    error_container.classList.remove("active");
+  }, 1000);
+}
+function isNotNumber(value) {
+  const validCharacters = ["(", ")"];
+  if (value === "" || value === null) {
+    return true;
+  }
+  for (let i = 0; i < value.length; i++) {
+    if (isNaN(value[i]) && !validCharacters.includes(value[i])) {
+      return true;
+    }
+  }
+  return false;
+}
 function handlePercentage(input) {
   let input_array = input.split("");
 
