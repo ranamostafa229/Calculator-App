@@ -104,7 +104,7 @@ function formatOutput(output) {
 function validateInput(value) {
   let last_input = input.slice(-1);
   let current_char = value.charAt(0);
-  let operators = ["+", "-", "*", "/", "%"];
+  let operators = ["+", "*", "/", "%"];
 
   if (value === "." && last_input === ".") {
     return false;
