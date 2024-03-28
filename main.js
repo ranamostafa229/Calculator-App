@@ -1,9 +1,17 @@
-const keys = document.querySelectorAll(".key");
+const keys = document.querySelectorAll(".key ");
+const keysContainer = document.querySelector(".keys");
+const calculator = document.querySelector(".calculator");
+const display = document.querySelector(".display");
 const display_input = document.querySelector(".display .input");
 const display_output = document.querySelector(".display .output");
 const display_error = document.querySelector(".error_message");
 const error_container = document.querySelector(".error_container");
+const mode_container = document.querySelector(".mode-container");
+const light_icon = document.querySelector(".mode-light-container");
+const dark_icon = document.querySelector(".mode-dark-container");
+const app = document.querySelector(".app");
 
+let isDarkMode = true;
 let input = "";
 for (let key of keys) {
   const value = key.dataset.key;
@@ -150,3 +158,47 @@ function handlePercentage(input) {
   }
   return input_array.join("");
 }
+
+light_icon.addEventListener("click", () => {
+  calculator.classList.add("light");
+  keysContainer.classList.add("light");
+  keys.forEach((key) => {
+    key.classList.add("light");
+    key.classList.remove("dark");
+  });
+  calculator.classList.remove("dark");
+  keysContainer.classList.remove("dark");
+  mode_container.classList.add("light");
+  mode_container.classList.remove("dark");
+  display.classList.add("light");
+  display.classList.remove("dark");
+  light_icon.classList.add("show");
+  dark_icon.classList.remove("show");
+  app.classList.add("light");
+  app.classList.remove("dark");
+  isDarkMode = false;
+});
+isDarkMode
+  ? dark_icon.classList.add("show") & app.classList.add("dark")
+  : app.classList.add("light");
+isDarkMode
+  ? calculator.classList.add("dark")
+  : calculator.classList.remove("dark");
+dark_icon.addEventListener("click", () => {
+  calculator.classList.add("dark");
+  keysContainer.classList.add("dark");
+  keys.forEach((key) => {
+    key.classList.add("dark");
+    key.classList.remove("light");
+  });
+  calculator.classList.remove("light");
+  keysContainer.classList.remove("light");
+  mode_container.classList.add("dark");
+  mode_container.classList.remove("light");
+  display.classList.add("dark");
+  display.classList.remove("light");
+  light_icon.classList.remove("show");
+  dark_icon.classList.add("show");
+  app.classList.add("dark");
+  isDarkMode = true;
+});
